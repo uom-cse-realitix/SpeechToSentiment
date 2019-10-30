@@ -3,7 +3,7 @@
 This repository integrates Pykaldi Speech Recognition Toolkit with a text classifier 
 to obtain the sentiment of the user's command (locate, describe, no_op).
 
-###Steps to setup:
+##Steps to setup:
 
 1) Create an environment using Virtualenv or Conda
 2) Clone the Pykaldi repository from https://github.com/pykaldi/pykaldi.git and build 
