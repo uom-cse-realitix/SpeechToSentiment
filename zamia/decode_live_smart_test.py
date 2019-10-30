@@ -13,7 +13,7 @@ from kaldi.nnet3 import NnetSimpleComputationOptions
 from kaldi.util.table import SequentialMatrixReader
 from kaldi.base import set_verbose_level
 
-from classifier import pre_initialize, get_sentiment
+from classifier import SentimentAnalyzer
 from tensorflow.keras.models import load_model
 
 import pyaudio
@@ -95,7 +95,7 @@ asr = NnetLatticeFasterRecognizer.from_files(
 p = pyaudio.PyAudio()
 
 ############################################
-_, tokenizer = pre_initialize()
+sentiment_analyzer = SentimentAnalyzer()
 model = load_model('./lstm.h5')
 ############################################
 
@@ -134,7 +134,7 @@ while num_phrases == -1 or n > 0:
         r = recognize_speech()
         if num_phrases == -1:
             print ("Detected speech: ", r)
-            get_sentiment(r)
+            sentiment_analyzer.get_sentiment(r, model)
         else:
             response.append(r)
         # Remove temp file. Comment line to review.
