@@ -53,6 +53,9 @@ def recognize_speech():
             # print("Detected text: ", out["text"])
             return out["text"]
 
+
+dir_path = os.path.dirname(os.path.realpath(__file__))
+
 CHUNK = 1024
 FORMAT = pyaudio.paInt16
 CHANNELS = 1
@@ -86,9 +89,9 @@ decodable_opts.acoustic_scale = 1.0
 decodable_opts.frame_subsampling_factor = 3
 decodable_opts.frames_per_chunk = 150
 asr = NnetLatticeFasterRecognizer.from_files(
-    "/media/ashen/52DAB5C7DAB5A81D/Ubuntu_test/zamia/exp/nnet3_chain/tdnn_f/final.mdl",
-    "/media/ashen/52DAB5C7DAB5A81D/Ubuntu_test/zamia/exp/nnet3_chain/tdnn_f/graph/HCLG.fst",
-    "/media/ashen/52DAB5C7DAB5A81D/Ubuntu_test/zamia/data/lang/words.txt",
+    dir_path + "/exp/nnet3_chain/tdnn_f/final.mdl",
+    dir_path + "/exp/nnet3_chain/tdnn_f/graph/HCLG.fst",
+    dir_path + "/data/lang/words.txt",
     decoder_opts=decoder_opts,
     decodable_opts=decodable_opts)
 
