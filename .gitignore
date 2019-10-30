@@ -1,0 +1,10 @@
+/env/
+/zamia/conf/
+/zamia/data/
+/zamia/exp/
+/zamia/live/
+**lstm.h5
+
+/kaldi/
+/.idea
+
