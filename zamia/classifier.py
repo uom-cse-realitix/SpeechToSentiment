@@ -14,6 +14,7 @@ from imblearn.over_sampling import SMOTE
 
 import nltk
 import numpy as np
+import os
 
 # The maximum number of words to be used. (most frequent)
 from tensorflow.keras.models import load_model
@@ -38,8 +39,10 @@ stopwords_list = ["i", "me", "my", "myself", "we", "our", "ours", "ourselves", "
 
 class SentimentAnalyzer:
 
-    def __init__(self):
-        self.df, self.tokenizer = self.pre_initialize()
+    def __init__(self, dataset_path):
+        self.dataset_path = dataset_path
+        self.df, self.tokenizer = self.pre_initialize(self.dataset_path)
+
 
     def import_and_prepare(self, filepath):
         df = pd.read_csv(filepath, names=['sentence', 'operation'], sep=',', engine='python')
@@ -126,8 +129,8 @@ class SentimentAnalyzer:
         pred = model.predict(padded)
         return pred
 
-    def pre_initialize(self):
-        df, sentences, y = self.import_and_prepare('tc_data/dataset_new.txt')
+    def pre_initialize(self, dataset_path):
+        df, sentences, y = self.import_and_prepare(dataset_path + '/tc_data/dataset_new.txt')
         # df_temp, sentences_temp, y_temp = import_and_prepare('data/dataset_new.txt')
         self.plot_label_distribution(df)
         filtered_sentences = self.filter_stopwords(sentences, stopwords_list)
@@ -157,8 +160,9 @@ if __name__ == '__main__':
     # plot_history(history)
 
     sentimentAnalyzer = SentimentAnalyzer()
+    dir_path = os.path.dirname(os.path.realpath(__file__))
 
     # ====== Test ========
-    model = load_model('./lstm.h5')
+    model = load_model(dir_path + '/lstm.h5')
     new_command = 'What is this pen'
     sentimentAnalyzer.get_sentiment(new_command, model)
