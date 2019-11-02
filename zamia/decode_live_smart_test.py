@@ -12,15 +12,18 @@ from kaldi.decoder import LatticeFasterDecoderOptions
 from kaldi.nnet3 import NnetSimpleComputationOptions
 from kaldi.util.table import SequentialMatrixReader
 from kaldi.base import set_verbose_level
-
-from classifier import SentimentAnalyzer
 from tensorflow.keras.models import load_model
 
 import pyaudio
 import wave
-
 import os
-from utils import Utils
+
+try:
+    from zamia.utils import Utils
+    from zamia.classifier import SentimentAnalyzer
+except ImportError:
+    from utils import Utils
+    from classifier import SentimentAnalyzer
 
 CHUNK = 1024
 FORMAT = pyaudio.paInt16
@@ -44,9 +47,9 @@ PREV_AUDIO = 0.5  # Previous audio (in seconds) to prepend. When noise
 num_phrases = -1
 
 class SpeechRecognizer:
-    def __init__(self, dir_path):
+    def __init__(self):
         set_verbose_level(0)
-        self.dir_path = dir_path
+        self.dir_path = os.path.dirname(os.path.realpath(__file__))
         self.WAVE_OUTPUT_FILENAME = "utt1.wav"
         self.SAVE_PATH = self.dir_path + '/data/test'
         self.initialize(self.dir_path)
@@ -170,6 +173,5 @@ class SpeechRecognizer:
         p.terminate()
 
 if __name__=="__main__":
-    dir_path = os.path.dirname(os.path.realpath(__file__))
-    sr = SpeechRecognizer(dir_path)
+    sr = SpeechRecognizer()
     sr.main()
