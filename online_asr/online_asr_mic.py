@@ -1,4 +1,3 @@
-# https://github.com/watson-developer-cloud/python-sdk
 # You need to install pyaudio to run this example
 # pip install pyaudio
 
@@ -7,23 +6,12 @@
 # recordings to the queue, and the websocket client would be sending the
 # recordings to the speech to text service
 
-from __future__ import print_function
 import pyaudio
 from ibm_watson import SpeechToTextV1
 from ibm_watson.websocket import RecognizeCallback, AudioSource
 from threading import Thread
-import yaml
-
-def readYaml(configFileName):
-    config = {}
-    with open(configFileName, 'r') as stream:
-        try:
-            config = yaml.safe_load(stream)
-        except yaml.YAMLError as exc:
-            print(exc)
-    return config
-
-config = readYaml("config.yaml")
+from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
+from utils import Utils
 
 try:
     from Queue import Queue, Full
@@ -43,14 +31,16 @@ q = Queue(maxsize=int(round(BUF_MAX_SIZE / CHUNK)))
 # Create an instance of AudioSource
 audio_source = AudioSource(q, True, True)
 
+config = Utils.readYaml("config.yaml")
+
 ###############################################
 #### Prepare Speech to Text Service ########
 ###############################################
 
 # initialize speech to text service
-speech_to_text = SpeechToTextV1(
-    iam_apikey= config['watson']['API_KEY'],
-    url= config['watson']['URL'])
+authenticator = IAMAuthenticator(config['watson']['API_KEY'])
+speech_to_text = SpeechToTextV1(authenticator=authenticator)
+speech_to_text.set_service_url(config['watson']['URL'])
 
 # define callback for the speech to text service
 class MyRecognizeCallback(RecognizeCallback):
@@ -85,7 +75,7 @@ class MyRecognizeCallback(RecognizeCallback):
 def recognize_using_weboscket(*args):
     mycallback = MyRecognizeCallback()
     speech_to_text.recognize_using_websocket(audio=audio_source,
-                                             content_type='audio/l16; rate=44100',
+                                             content_type='audio/l16; rate=16000',
                                              recognize_callback=mycallback,
                                              interim_results=True)
 
@@ -138,4 +128,4 @@ except KeyboardInterrupt:
     stream.stop_stream()
     stream.close()
     audio.terminate()
-audio_source.completed_recording()
+    audio_source.completed_recording()
