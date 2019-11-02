@@ -20,6 +20,7 @@ import pyaudio
 import wave
 
 import os
+from utils import Utils
 
 CHUNK = 1024
 FORMAT = pyaudio.paInt16
@@ -48,6 +49,7 @@ class SpeechRecognizer:
         self.dir_path = dir_path
         self.WAVE_OUTPUT_FILENAME = "utt1.wav"
         self.SAVE_PATH = self.dir_path + '/data/test'
+        self.initialize(self.dir_path)
 
     def save_speech(self, data, p, save_path, wave_output_filename):
         """ Saves mic data to temporary WAV file. Returns filename of saved
@@ -84,8 +86,10 @@ class SpeechRecognizer:
                 # print("Detected text: ", out["text"])
                 return out["text"]
 
-
-
+    def initialize(self, dir_path):
+        regex = "^([A-z0-9-_+]+\/){1,}([A-z0-9]+(\.(conf|mat|stats|dubm|ie|wav|scp))?)$"
+        Utils.configure_paths(dir_path, '/exp/nnet3_chain/ivectors_test_hires/conf/ivector_extractor.conf', '=', regex)
+        Utils.configure_paths(dir_path, '/data/test/wav.scp', ' ', regex)
 
     def main(self):
         # Construct recognizer
