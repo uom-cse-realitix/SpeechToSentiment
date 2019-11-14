@@ -2,7 +2,6 @@
 
 from __future__ import print_function
 
-import os
 from collections import deque
 import math
 import audioop
@@ -164,7 +163,6 @@ class SpeechRecognizer:
                 prev_audio = deque(maxlen=int(0.5 * rel) + 1)
                 audio2send = []
                 n -= 1
-                # print "Listening ..."
             else:
                 prev_audio.append(cur_data)
 
