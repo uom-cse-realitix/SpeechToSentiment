@@ -16,9 +16,9 @@ decodable_opts.acoustic_scale = 1.0
 decodable_opts.frame_subsampling_factor = 3
 decodable_opts.frames_per_chunk = 150
 asr = NnetLatticeFasterRecognizer.from_files(
-    "/home/ashen/Documents/GitHubRepos/pykaldi/examples/setups/zamia/exp/nnet3_chain/tdnn_f/final.mdl",
-    "/home/ashen/Documents/GitHubRepos/pykaldi/examples/setups/zamia/exp/nnet3_chain/tdnn_f/graph/HCLG.fst",
-    "/home/ashen/Documents/GitHubRepos/pykaldi/examples/setups/zamia/data/lang/words.txt",
+    "exp/nnet3_chain/tdnn_f/final.mdl",
+    "exp/nnet3_chain/tdnn_f/graph/HCLG.fst",
+    "data/lang/words.txt",
     decoder_opts=decoder_opts,
     decodable_opts=decodable_opts)
 
