@@ -4,7 +4,10 @@
 /zamia/exp/
 /zamia/live/
 **lstm.h5
-
-/kaldi/
 /.idea
 
+/aspire/conf/
+/aspire/data/
+/aspire/exp/
+/aspire/new/
+/kaldi/

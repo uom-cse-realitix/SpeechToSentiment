@@ -62,5 +62,5 @@ audio_file = open(join(dirname(__file__), 'speech.wav'), 'rb')
 audio_source = AudioSource(audio_file)
 recognize_thread = threading.Thread(
     target=service.recognize_using_websocket,
-    args=(audio_source, "audio/l16; rate=44100", mycallback))
+    args=(audio_source, "audio/l16; rate=16000", mycallback))
 recognize_thread.start()

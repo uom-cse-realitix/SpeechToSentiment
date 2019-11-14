@@ -46,9 +46,14 @@ speech_to_text.set_service_url(config['watson']['URL'])
 class MyRecognizeCallback(RecognizeCallback):
     def __init__(self):
         RecognizeCallback.__init__(self)
+        self.current_command = ""
 
     def on_transcription(self, transcript):
-        print(transcript)
+        print('')
+        # self.current_command = transcript
+
+    # def on_transcription_complete(self):
+    #     print(self.current_command)
 
     def on_connected(self):
         print('Connection was successful')
@@ -62,11 +67,15 @@ class MyRecognizeCallback(RecognizeCallback):
     def on_listening(self):
         print('Service is listening')
 
-    def on_hypothesis(self, hypothesis):
-        print(hypothesis)
+    # def on_hypothesis(self, hypothesis):
+    #     print('...')
 
     def on_data(self, data):
-        print(data)
+        # print(data)
+        # print(data['results'][0]['final'])
+        if data['results'][0]['final'] == True:
+            self.current_command = data['results'][0]['alternatives'][0]['transcript']
+            print(self.current_command)
 
     def on_close(self):
         print("Connection closed")
@@ -86,7 +95,7 @@ def recognize_using_weboscket(*args):
 # Variables for recording the speech
 FORMAT = pyaudio.paInt16
 CHANNELS = 1
-RATE = 44100
+RATE = 16000
 
 # define callback for pyaudio to store the recording in queue
 def pyaudio_callback(in_data, frame_count, time_info, status):
